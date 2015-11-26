@@ -15,3 +15,7 @@ Takes in 3 mandatory arguments (one optional).
 + ```--norename``` to avoid renaming movie files
 
 **Note:**  This requires [ExifTool](http://www.sno.phy.queensu.ca/~phil/exiftool/) - just need to download the standalone tool, and point the script at it.  Maybe a TODO later on?
+
+* #### [adobe.cmd](../adobe.cmd)
+Run with Admin priviledges - to disable the annoying Adobe context menu.  Its when you right click on stuff and it has all these options to do things to a file with Adobe.  Thanks adobe ... we like you, but not too that much to commit to looking at your menus all day.
+
