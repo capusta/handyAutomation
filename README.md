@@ -14,5 +14,4 @@ Takes in 3 mandatory arguments (one optional).
 + ```-o``` for the output direcotry, just like the inputer diretory
 + ```--norename``` to avoid renaming movie files
 
-###### Note:
-This requires [ExifTool](http://www.sno.phy.queensu.ca/~phil/exiftool/) - just need to download the standalone tool, and point the script at it.  Maybe a TODO later on?
+**Note:**  This requires [ExifTool](http://www.sno.phy.queensu.ca/~phil/exiftool/) - just need to download the standalone tool, and point the script at it.  Maybe a TODO later on?
