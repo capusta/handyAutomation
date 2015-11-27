@@ -20,4 +20,9 @@ Takes in 3 mandatory arguments (one optional).
 Run with Admin priviledges - to disable the annoying Adobe context menu.  Its when you right click on stuff and it has all these options to do things to a file with Adobe.  Thanks adobe ... we like you, but not too that much to commit to looking at your menus all day.
 
 * #### [Windows Port Forwarding](./winPortFwd.ps1)
-Coming soon
+Sometimes there is a need to run application and connect to it from outside the network.  Some applications don't like to be connected to outside of the local network.  We can port-forward to localhost.  Usage:
+1.  Start Windows powershell as Administrator
+2.  Navigate to the git cloned direcotry
+3.  ```.\winPortFwd.ps1 -from 10045 -to 32400```
+
+This example uses [plex media server](https://plex.tv/) to route traffic to localhost.  If you can set up port forwarding on your local router - then you can enjoy watching movies from anywehre - and streaming them from your home server :)
