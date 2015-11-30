@@ -27,5 +27,5 @@ Sometimes there is a need to run application and connect to it from outside the 
 
 This example uses [plex media server](https://plex.tv/) to route traffic to localhost.  If you can set up port forwarding on your local router - then you can enjoy watching movies from anywehre - and streaming them from your home server :)
 
-4. #### [backups.cmd](../03makebackups.rb)
+4. #### [backups.cmd](../04makebackups.rb)
 Backups are done with [FreeFileSync](http://www.freefilesync.org/).  Sorry, windows only :(  This program has a nice batch funciton which is very customizable.  

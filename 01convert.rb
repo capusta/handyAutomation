@@ -16,10 +16,9 @@ opt_parse = OptionParser.new do |opts|
   opts.on("-m", "--mode style") do |s|
     case s
       when 'movie' then @options.movieMode = true
-      when 'photo' then @options.photoMode = true     
-      else  puts "No mode specified in '-m'" 
+      when 'photo' then @options.photoMode = true
+      else  puts "No mode specified in '-m'"
             exit
-            
     end
   end
   opts.on("--norename") do |s|
@@ -40,11 +39,11 @@ opt_parse = OptionParser.new do |opts|
   end
   opts.on("--exif tool") do |e|
     if !File.file? @options.exiftool then
-      a1 = File.file? e      
+      a1 = File.file? e
       puts "exif tool = e" if @options.debug
       throw "Exif tool not found" if !a1
       @options.exiftool = e
-      end
+    end
     MiniExiftool.command = @options.exiftool
   end
 end
@@ -54,16 +53,16 @@ def do_video
   seenHash = {}
   debug = @options.debug
   p 'starting movie mode','' if @options.debug
-  
+
   if File.exist?(@options.hashname) then
     rio(@options.hashname).chomp.lines{ |l|
       seenHash[l] = true
     }
   end
-  
+
   ignore = ["sample"]
   approve = [".avi",".mov",".mp4",".mkv"]
-  
+
   Find.find(@options.inputDir){|f|
     next if File.directory?(f)
     next if ignore.any? {|g| f.downcase.include? g}
@@ -84,15 +83,15 @@ def do_video
     p "#{File.basename(f,".*")}", "#{myhash}" if debug
     mov_yr_mon_day = "" if @options.norename
     outname = mov_yr_mon_day+File.basename(f,".*")+".mp4"
-    
+
     nestedDir = @options.outputDir+mov_yr_mon
     if !File.exist? nestedDir then
-      Dir.mkdir nestedDir     
+      Dir.mkdir nestedDir
     end
     outname = nestedDir+"/"+outname
     p "saving to #{outname}" if debug
-    
-    ### Rotationgs - --roate <mode> 1. Vertical flip 2. horizontal flip 4. clockwise 
+
+   ### Rotationgs - --roate <mode> 1. Vertical flip 2. horizontal flip 4. clockwise
     rotation_option = case mov['Rotation']
       when 90 then '--rotate=4'
       when 180 then '--rotate=3'
@@ -116,9 +115,9 @@ def do_pictures
   return nil if !@options.photoMode
   #no need to keep track of what we seen
   p 'starting photo mode' if @options.debug
-  
+
   approve = ["jpeg", ".jpg"]
-  
+
   Find.find(@options.inputDir){|f|
     debug = @options.debug
     next if File.directory?(f)
@@ -131,22 +130,17 @@ def do_pictures
     end
     p pic['orientation'] if debug
     p pic['DateTimeOriginal'] if debug
-    
     pic_yr_mon_day = picDate.strftime("%Y.%m.%d")
     p "Exif Creation: #{pic_yr_mon_day}" if debug
     p "#{File.basename(f,".*")}" if debug
-    
     outname = pic_yr_mon_day+" - "+File.basename(f)
-    
     nestedDir = @options.outputDir+pic_yr_mon_day
     if !File.exist? nestedDir then
-      Dir.mkdir nestedDir     
+      Dir.mkdir nestedDir
     end
     outname = nestedDir+"/"+outname
     FileUtils.mv(File.path(f), outname)
-    
   }
-  
 end
 
 def test_handbrake
