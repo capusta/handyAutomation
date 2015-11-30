@@ -2,3 +2,5 @@
 *.JPG
 *.log
 *.swp
+ffsync/*.ffsync
+ffsync/*.data
