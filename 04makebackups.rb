@@ -37,13 +37,14 @@ opt_parse = OptionParser.new do |opts|
   end
 end
 
-@options.fact = 'newfact'
+@options.fact = {'oldfact' => 'two', 'foo' => 'brar'}
+
 fname='ffsync/test.ffsync'
 templ='ffsync/_backup_template.erb'
 
 b = binding
-File.open(fname, 'a') do |file|
-  file.puts(ERB.new(File.read(templ)).result(b))
+File.open(fname, 'w') do |file|
+  file.puts(ERB.new(File.read(templ),nil,'-').result(b))
 end
 
 opt_parse.parse!
