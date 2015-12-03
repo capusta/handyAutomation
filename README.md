@@ -9,10 +9,10 @@ For those who use old iPhones, off-contract - its sometimes hard to watch movies
 For Photo mode - will look at all the EXIF data, and sort all the .JPG files.
 
 Takes in 3 mandatory arguments (one optional).
-+ ```-m``` for the mode - either *movie* or *photo*
-+ ```-i``` for the input direcotry.  Windows style ```c:\path\to\dir``` or linux style ```/home/user/dir```
-+ ```-o``` for the output direcotry, just like the inputer diretory
-+ ```--norename``` to avoid renaming movie files
+  + ```-m``` for the mode - either *movie* or *photo*
+  + ```-i``` for the input direcotry.  Windows style ```c:\path\to\dir``` or linux style ```/home/user/dir```
+  + ```-o``` for the output direcotry, just like the inputer diretory
+  + ```--norename``` to avoid renaming movie files
 
   **Note:**  This requires [ExifTool](http://www.sno.phy.queensu.ca/~phil/exiftool/) - just need to download the standalone tool, and point the script at it.  Maybe a TODO later on?
 
