@@ -7,6 +7,10 @@ require 'fileutils'
 @options = OpenStruct.new
 @options.hashname = 'ffsync/_current.data'
 @options.mode = 'unknown'
+@options.outFile = 'ffsync/backup.ffsync'
+@options.templateFile = 'ffsync/_template.ffsync.erb'
+@options.directories = {}
+
 
 opt_parse = OptionParser.new do |opts|
   opts.banner = "Usage: 04makebackups.rb [@options]"
@@ -37,14 +41,13 @@ opt_parse = OptionParser.new do |opts|
   end
 end
 
-@options.fact = {'oldfact' => 'two', 'foo' => 'brar'}
-
-fname='ffsync/test.ffsync'
-templ='ffsync/_backup_template.erb'
+@options.directories['c:\\windows\\dirOne'] = 'c:\\windows\\dirOnebackups'
+@options.directories['c:\\windows\\dirTwo'] = 'c:\\windows\\dirTwobackups'
 
 b = binding
-File.open(fname, 'w') do |file|
-  file.puts(ERB.new(File.read(templ),nil,'-').result(b))
+File.open(@options.outFile, 'w') do |file|
+  file.puts(ERB.new(File.read(@options.templateFile),nil,'-').result(b))
 end
 
+puts @options.directories
 opt_parse.parse!
