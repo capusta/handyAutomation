@@ -18,7 +18,11 @@
             </CustomDirections>
             <DetectMovedFiles>false</DetectMovedFiles>
             <DeletionPolicy>Versioning</DeletionPolicy>
-            <VersioningFolder Style="TimeStamp">E:\_Versioning</VersioningFolder>
+            <%- if @options.versioning.nil? then -%>
+            <VersioningFolder Style="Replace"></VersioningFolder>
+            <%- else %>
+            <VersioningFolder Style="TimeStamp"><%=@options.versioning %></VersioningFolder>
+            <%- end %>
         </SyncConfig>
         <GlobalFilter>
             <Include>
@@ -49,6 +53,10 @@
     <BatchConfig>
         <HandleError>Popup</HandleError>
         <RunMinimized>true</RunMinimized>
-        <LogfileFolder Limit="-1">C:\_Backups\logs</LogfileFolder>
+        <%- if @options.logfile.nil? then -%>
+        <LogfileFolder Limit="0"></LogfileFolder>
+        <%- else %>
+        <LogfileFolder Limit="-1"><%= @options.logfile %></LogfileFolder>
+        <%- end %>
     </BatchConfig>
 </FreeFileSync>
