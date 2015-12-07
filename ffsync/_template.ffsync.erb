@@ -21,7 +21,7 @@
             <%- if @options.versioning.nil? then -%>
             <VersioningFolder Style="Replace"/>
             <%- else %>
-            <VersioningFolder Style="TimeStamp"><%=@options.versioning %></VersioningFolder>
+            <VersioningFolder Style="TimeStamp"><%=@options.versioning -%></VersioningFolder>
             <%- end %>
         </SyncConfig>
         <GlobalFilter>
@@ -43,8 +43,8 @@
         <FolderPairs>
         <%- @options.directories.each do |left,right| -%>
             <Pair>
-                <Left><%= left %></Left>
-                <Right><%= right %></Right>
+                <Left><%= left -%></Left>
+                <Right><%= right -%></Right>
             </Pair>
         <%- end -%>
         </FolderPairs>
