@@ -43,8 +43,8 @@ opt_parse = OptionParser.new do |opts|
     p "output dir OK #{v}" if @options.debug
   end
     #### LOGFILE
-  opts.on('-l', '--logfile l') do |v|
-    throw "log file #{v} is a directory" if File.directory?(v)
+  opts.on('-l', '--logdir l') do |v|
+    throw "log file #{v} is not a directory" if !File.directory?(v)
     @options.logfile = v
     puts "logging to #{v}" if @options.debug
   end
