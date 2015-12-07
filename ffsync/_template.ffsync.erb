@@ -19,7 +19,7 @@
             <DetectMovedFiles>false</DetectMovedFiles>
             <DeletionPolicy>Versioning</DeletionPolicy>
             <%- if @options.versioning.nil? then -%>
-            <VersioningFolder Style="Replace"></VersioningFolder>
+            <VersioningFolder Style="Replace"/>
             <%- else %>
             <VersioningFolder Style="TimeStamp"><%=@options.versioning %></VersioningFolder>
             <%- end %>
@@ -54,7 +54,7 @@
         <HandleError>Popup</HandleError>
         <RunMinimized>true</RunMinimized>
         <%- if @options.logfile.nil? then -%>
-        <LogfileFolder Limit="0"></LogfileFolder>
+        <LogfileFolder Limit="0"/>
         <%- else %>
         <LogfileFolder Limit="-1"><%= @options.logfile %></LogfileFolder>
         <%- end %>

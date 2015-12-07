@@ -7,7 +7,7 @@ require 'fileutils'
 @options = OpenStruct.new
 @options.hashname = 'ffsync/_current.data'
 @options.mode = 'unknown'
-@options.outFile = 'ffsync/backup.ffsync'
+@options.outFile = 'ffsync/backup.ffs_batch'
 @options.templateFile = 'ffsync/_template.ffsync.erb'
 @options.directories = {}
 @options.logfile = nil
@@ -66,4 +66,5 @@ File.open(@options.outFile, 'w') do |file|
 end
 
 throw "please add a mode: -m [add | remove]" if @options.mode == 'unknown'
+throw "need to sync at least one directory " if @options.directories.length == 0
 puts @options.to_s if @options.debug

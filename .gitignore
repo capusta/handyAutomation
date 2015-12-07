@@ -4,3 +4,4 @@
 *.swp
 ffsync/*.ffsync
 ffsync/*.data
+*.ffs_batch
