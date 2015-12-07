@@ -74,7 +74,7 @@ debug = @options.debug
 
 ## Lines 0,1,2 are reserved
 temp = rio(@options.currentData).lines(0..1).chomp.to_a
-@options.logdir     = @options.logdir || temp[0].chomp
+@options.logfile    = @options.logfile || temp[0].chomp
 @options.versioning = @options.versioning || temp[1].chomp
 
 rio(@options.currentData).lines(2..File.open(@options.currentData).readlines.size).chomp { |l|
