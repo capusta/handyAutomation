@@ -156,6 +156,9 @@ end
 @options = OpenStruct.new
 @options.hashname = 'seenhash.xml'
 @options.exiftool = "PATH TO EXIF TOOL exiftool.exe"
+# Please edit the path to your exif tool
+# you cand download it for windows here
+# http://www.sno.phy.queensu.ca/~phil/exiftool/install.html#Windows
 
 # Program technically starts here
 opt_parse.parse!

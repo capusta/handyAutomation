@@ -11,6 +11,7 @@ For those who use old iPhones, off-contract - its sometimes hard to watch movies
     * ```-i``` for the input direcotry.  Windows style ```c:\path\to\dir``` or linux style ```/home/user/dir```
     * ```-o``` for the output direcotry, just like the inputer diretory
     * ```--norename``` to avoid renaming movie files
+
     **Note:**  This requires [ExifTool](http://www.sno.phy.queensu.ca/~phil/exiftool/) - just need to download the standalone tool, and point the script at it.  Maybe a TODO later on?
 
 2. #### [adobe.cmd](./02adobe.cmd)
