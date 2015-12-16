@@ -6,6 +6,10 @@ require 'mini_exiftool'
 require 'fileutils'
 require 'rio'
 
+# HELP ME VITALI ... HELP ME .. MAKE A PULL REQUEST
+# AND IMPROVE THE CODE :)
+
+
 # Please set the location of ExifTool
 
 opt_parse = OptionParser.new do |opts|
