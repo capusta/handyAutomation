@@ -92,6 +92,9 @@ def do_video
     if !File.exist? nestedDir then
       Dir.mkdir nestedDir
     end
+    if !File.exist? "#{@options.inputDir}/completed" then
+      Dir.mkdir "#{@options.inputDir}/completed"
+    end
     outname = nestedDir+"/"+outname
     p "saving to #{outname}" if debug
 
@@ -112,6 +115,7 @@ def do_video
     puts`#{cmd}`
     seenHash["#{myhash}"] = true
     rio(@options.hashname) << "#{myhash}\n"
+    FileUtils.mv(File.path(f), "#{@options.inputDir}/completed")
   }
 end
 
@@ -159,8 +163,8 @@ end
 
 @options = OpenStruct.new
 @options.hashname = 'seenhash.xml'
-@options.exiftool = "PATH TO EXIF TOOL exiftool.exe"
-# Please edit the path to your exif tool
+@options.exiftool = "./exiftool.exe"
+# Please edit the path to your exif tool ... assuming current directory
 # you cand download it for windows here
 # http://www.sno.phy.queensu.ca/~phil/exiftool/install.html#Windows
 
