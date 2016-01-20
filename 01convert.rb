@@ -124,10 +124,11 @@ def do_pictures
   #no need to keep track of what we seen
   p 'starting photo mode' if @options.debug
 
-  approve = ["jpeg", ".jpg"]
+  approve = ["jpeg", ".jpg", "JPG"]
 
   Find.find(@options.inputDir){|f|
     debug = @options.debug
+    puts "checking #{f}" if debug
     next if File.directory?(f)
     next if !approve.any? {|g| f.downcase.include? g}
     pic = MiniExiftool.new f
