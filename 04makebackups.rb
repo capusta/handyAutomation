@@ -5,12 +5,13 @@ require 'rio'
 require 'fileutils'
 
 @options = OpenStruct.new
+@commondir = './_04backups'
 
 def set_default()
-  @options.currentData = 'ffsync/_current.data'
+  @options.currentData = "#{@commondir}/_current.data"
   @options.mode = 'list'
-  @options.outFile = 'ffsync/backup.ffs_batch'
-  @options.templateFile = 'ffsync/_template.ffsync.erb'
+  @options.outFile = "#{@commondir}/backup.ffs_batch"
+  @options.templateFile = "#{@commondir}/_template.ffsync.erb"
   @options.directories = {}
   @options.logfile = nil
   @options.versioning = nil

@@ -6,35 +6,44 @@ require 'mini_exiftool'
 require 'fileutils'
 require 'rio'
 
+commonDir = './01convert'
+Dir.mkdir commonDir if !File.exist? commonDir
+
 @options = OpenStruct.new
-@options.hashname = 'seenhash.xml'
-@options.exiftool = "./exiftool.exe"
+@options.hashname = "#{commonDir}/seenhash.xml"
+@options.exiftool = "#{commonDir}/exiftool.exe"
 # Please edit the path to your exif tool ... assuming current directory
 # you cand download it for windows here
 # http://www.sno.phy.queensu.ca/~phil/exiftool/install.html#Windows
 
 opt_parse = OptionParser.new do |opts|
   opts.banner = "Usage: convert.rb [@options]"
+
   opts.on( "-d", "--debug") do |v|
     @options.debug = true
-    end
+  end
+
   opts.on("-m", "--mode style") do |s|
     case s
       when 'movie' then @options.movieMode = true
       when 'photo' then @options.photoMode = true
       else  puts "No mode specified in '-m'"
-            exit
+      exit
     end
   end
+
   opts.on("--norename") do |s|
     @options.norename = true
-   end
+  end
+
   opts.on("-i", "--input dir") do |s|
     ans = File.directory?(s || "")
-    throw "invalid input dir " if !ans
-    @options.inputDir = s
-    p "checking input dir #{s} ... #{ans}" if @options.debug
+      throw "invalid input dir " if !ans
+    v << "/" unless s[s.length-1] == "/"
+    @options.inputDir = v
+    p "checking input dir #{v} ... #{ans}" if @options.debug
   end
+
   opts.on("-o", "--output dir") do |v|
     ans = File.directory?(v || "")
     throw "Output dir is not found" if !ans
@@ -42,6 +51,7 @@ opt_parse = OptionParser.new do |opts|
     @options.outputDir = v
     p "checking input dir #{v} ... #{ans}" if @options.debug
   end
+
   opts.on("--exif tool") do |e|
     if !File.file? @options.exiftool then
       a1 = File.file? e
@@ -49,6 +59,7 @@ opt_parse = OptionParser.new do |opts|
       throw "Exif tool not found" if !a1
       @options.exiftool = e
     end
+
     MiniExiftool.command = @options.exiftool
   end
 end

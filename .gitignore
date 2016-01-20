@@ -2,8 +2,6 @@
 *.JPG
 *.log
 *.swp
-ffsync/*.ffsync
-ffsync/*.data
 *.ffs_batch
 *.exe
 *.xml
