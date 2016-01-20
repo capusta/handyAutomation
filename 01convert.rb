@@ -6,11 +6,12 @@ require 'mini_exiftool'
 require 'fileutils'
 require 'rio'
 
-# HELP ME VITALI ... HELP ME .. MAKE A PULL REQUEST
-# AND IMPROVE THE CODE :)
-
-
-# Please set the location of ExifTool
+@options = OpenStruct.new
+@options.hashname = 'seenhash.xml'
+@options.exiftool = "./exiftool.exe"
+# Please edit the path to your exif tool ... assuming current directory
+# you cand download it for windows here
+# http://www.sno.phy.queensu.ca/~phil/exiftool/install.html#Windows
 
 opt_parse = OptionParser.new do |opts|
   opts.banner = "Usage: convert.rb [@options]"
@@ -162,16 +163,10 @@ def test_handbrake
   end
 end
 
-@options = OpenStruct.new
-@options.hashname = 'seenhash.xml'
-@options.exiftool = "./exiftool.exe"
-# Please edit the path to your exif tool ... assuming current directory
-# you cand download it for windows here
-# http://www.sno.phy.queensu.ca/~phil/exiftool/install.html#Windows
 
 # Program technically starts here
 opt_parse.parse!
-
 test_handbrake
+#perhaps we ill break this up later
 do_video
 do_pictures
