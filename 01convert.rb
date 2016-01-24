@@ -39,9 +39,9 @@ opt_parse = OptionParser.new do |opts|
   opts.on("-i", "--input dir") do |s|
     ans = File.directory?(s || "")
       throw "invalid input dir " if !ans
-    v << "/" unless s[s.length-1] == "/"
-    @options.inputDir = v
-    p "checking input dir #{v} ... #{ans}" if @options.debug
+    s << "/" unless s[s.length-1] == "/"
+    @options.inputDir = s
+    p "checking input dir #{s} ... #{ans}" if @options.debug
   end
 
   opts.on("-o", "--output dir") do |v|
