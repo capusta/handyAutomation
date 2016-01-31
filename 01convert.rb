@@ -6,7 +6,7 @@ require 'mini_exiftool'
 require 'fileutils'
 require 'rio'
 
-commonDir = './01convert'
+commonDir = './_01convert'
 Dir.mkdir commonDir if !File.exist? commonDir
 
 @options = OpenStruct.new

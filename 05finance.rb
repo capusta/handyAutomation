@@ -7,20 +7,19 @@ require_relative '__lib/filecheck.rb'
 @options = OpenStruct.new
 @options.debug = false
 
-opt_parse = OptionParser.new do |opts|
+OptionParser.new do |opts|
   opts.banner = "Usage: ruby 05finance.rb [@options]"
 
-  opts.on( "-d", "--debug", "displays a ton of useless info") do |v|
+  opts.on("-d", "--debug", "displays a ton of useless info") do
     @options.debug = true
     puts "debug mode is on " if @options.debug
   end
   
-  opts.on ( "-i", "--input", "Input file that has a list of transactions") do |v|
-    
+  opts.on("-i", "--input dir", "input file to parse") do |v|
+    @options.expFile = checkDir(v)
   end
-end
 
-opt_parse.parse!  
-checkdir(".")
+end.parse!
+
 puts '05 finance done'
 exit 0
