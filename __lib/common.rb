@@ -5,11 +5,17 @@ def checkDir(s)
   s
 end
 
+def checkFile(s)
+  gracefulExit("File #{s} does not exist") if !File.file?(s || "")
+  debugLog("File #{s} is OK")
+  s
+end
+
 def gracefulExit(msg)
   puts <<EOF
-    Something went wrong!
-    #{msg}
-    Exiting
+  
+  Error: #{msg}
+  -- Exiting --
 EOF
   exit
 end
