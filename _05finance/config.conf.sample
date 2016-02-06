@@ -1,0 +1,3 @@
+expense_file => c:\finances\file.txt
+archive_file => c:\finance\myYear.csv
+reports_folder => c:\finance\reports
