@@ -91,6 +91,11 @@ def do_video
       p "Already seen: #{File.basename(f)}"
       next
     end
+    # there is another instance of this script running somewhere
+    exit if File.exist? "#{myhash}"
+    # create touch file for future scripts
+    FileUtils.touch("#{myhash}")
+
     mov = MiniExiftool.new f
     movDate = mov["MediaCreateDate"] || mov.filecreatedate
     mov_yr_mon_day = movDate.strftime("%Y.%m.%d") + " - "
@@ -127,7 +132,8 @@ def do_video
     puts`#{cmd}`
     seenHash["#{myhash}"] = true
     rio(@options.hashname) << "#{myhash}\n"
-    FileUtils.mv(File.path(f), "#{@options.inputDir}/completed")
+    FileUtils.rm("#{myhash}")
+    #FileUtils.mv(File.path(f), "#{@options.inputDir}/completed")
   }
 end
 
