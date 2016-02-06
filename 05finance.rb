@@ -25,29 +25,19 @@ OptionParser.new do |opts|
     @options.debug = true
     puts "debug mode is on " if @options.debug
   end
-  
-  opts.on("-i", "--input file", "input file to parse") do |v|
-    @options.expFile = checkFile(v)
-  end
-  
-  opts.on("-a", "--archive file", "Archive file of all expenses") do |v|
-    puts "checking archive"
-    @options.archiveFile = checkFile(v)
-  end
-  
-  opts.on("-p", "--api api", "api needed for conversion") do |api|
+
+  opts.on("-p", "--api api", "api needed for conversion") do |api|    
     @options.api = api
   end
-
-  opts.on("-c", "--createmissing", "create all missing files") do |v|
-    @options.createmissing = true
+  
+  opts.on("-s", "--settings file", "Includes all of your settings ... locations, categories, etc") do |v|
+    @options.config = checkFile(v || "./_05finance/config.conf")
   end
   
 end.parse!
 
 gracefulExit("missing api") if @options.api.nil?
-[@options.expFile, @options.archiveFile].each { |d| 
-  puts "test #{d}"
-}
+gracefulExit("missing configuration file ") if @options.config.nil?
+
 puts '05 finance done'
 exit 0

@@ -6,7 +6,7 @@ def checkDir(s)
 end
 
 def checkFile(s)
-  gracefulExit("File #{s} does not exist") if !File.file?(s || "")
+  gracefulExit("File #{s} does not exist") if !File.exist?(s || "")
   debugLog("File #{s} is OK")
   s
 end
