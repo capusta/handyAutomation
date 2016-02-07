@@ -1,6 +1,10 @@
 def checkDir(s)
   gracefulExit("#{s} is not a valid directory.") if !File.directory?(s || "")
-  s << "/" unless s[s.length-1] == "/"
+  if s.include? "\\" then
+    s << "\\" unless s[s.length-1] == "\\" #we are using windows
+  else
+    s << "/" unless s[s.length-1] == "/"   #we are using linux
+  end
   debugLog("input directory #{s} is OK")
   s
 end

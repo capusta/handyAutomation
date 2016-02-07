@@ -21,6 +21,7 @@ require_relative '__lib/common.rb'
 @options.debug = false
 @options.api = nil
 @options.config = "./_05finance/config.conf"
+@options.currency = "jpy"
 
 OptionParser.new do |opts|
   opts.banner = "Usage: ruby 05finance.rb [@options]"
@@ -44,11 +45,43 @@ end.parse!
 gracefulExit("missing api") if @options.api.nil?
 gracefulExit("missing configuration file ") if @options.config.nil?
 
-uri = URI.parse("http://currency-api.appspot.com/api/USD/Jpy.json?key=#{@options.api}")
+uri = URI.parse("http://currency-api.appspot.com/api/USD/#{@options.currency}.json?key=#{@options.api}")
 resp = JSON.parse(Net::HTTP.get(uri))
 if resp.has_key? 'Error'
   raise "web service error"
 end
-puts resp if @options.debug
+rate = resp['rate'].to_f.round(2)
+puts "rate found: #{rate}"
+
+# Going to check all of the file prerequesites
+rio(@options.config).chomp.lines(/^expense_file/) {|f|
+  @inputFile = f.split("=>")[1].strip.to_s
+  checkFile @inputFile
+}
+rio(@options.config).chomp.lines(/^archive_file/) {|f|
+  @archive_file = f.split("=>")[1].strip.to_s
+  checkFile @archive_file
+}
+rio(@options.config).chomp.lines(/^categories_file/) {|f|
+  @categories_file = f.split("=>")[1].strip.to_s
+  checkFile @categories_file
+}
+rio(@options.config).chomp.lines(/^reports_folder/) {|f|
+  @reports_folder = f.split("=>")[1].strip.to_s
+  checkDir @reports_folder
+}  
+rio(@options.config).chomp.lines(/^date_format/) {|f|
+  @date_format = f.split("=>")[1].strip.to_s
+}  
+
+# Ready to parse all categories
+#TODO: actually parse this
+rio(@categories_file).chomp.lines {|l|
+  puts l
+}
+
+
+
+  
 puts '05 finance done'
 exit 0
