@@ -6,13 +6,12 @@ begin
   require 'rio'
   require 'rinruby'
   require "net/http"
-
+  require 'set'
+  require 'date'
 rescue LoadError
   `gem install rio`
   `gem install rinruby`
 end
-
-
 
 #File checking library cuz it looks like we use it a lot
 require_relative '__lib/common.rb'
@@ -22,6 +21,8 @@ require_relative '__lib/common.rb'
 @options.api = nil
 @options.config = "./_05finance/config.conf"
 @options.currency = "jpy"
+@categories = Set.new
+@transactions = []
 
 OptionParser.new do |opts|
   opts.banner = "Usage: ruby 05finance.rb [@options]"
@@ -53,6 +54,7 @@ end
 rate = resp['rate'].to_f.round(2)
 puts "rate found: #{rate}"
 
+checkFile(@options.config)
 # Going to check all of the file prerequesites
 rio(@options.config).chomp.lines(/^expense_file/) {|f|
   @inputFile = f.split("=>")[1].strip.to_s
@@ -77,11 +79,16 @@ rio(@options.config).chomp.lines(/^date_format/) {|f|
 # Ready to parse all categories
 #TODO: actually parse this
 rio(@categories_file).chomp.lines {|l|
-  puts l
+  c = l.split("=>")[1].strip.to_s
+  @categories.add(c)
 }
-
-
-
+@categories.each {|c|
+  if rio(@archive_file).chomp.lines[/Initial #{c}/].length != 12 then 
+    @transactions << "0,Initial #{c},#{c},#{ DateTime.now.strftime(@date_format)}"
+    
+  end
+  }
+p @transactions
   
 puts '05 finance done'
 exit 0
