@@ -5,10 +5,10 @@ begin
   require 'fileutils'
   require 'rio'
   require 'rinruby'
-  require "net/http"
+  require 'net/http'
   require 'set'
   require 'date'
-rescue LoadError
+rescue Gem::LoadError
   `gem install rio`
   `gem install rinruby`
 end
@@ -32,15 +32,14 @@ OptionParser.new do |opts|
     puts "debug mode is on " if @options.debug
   end
 
-  opts.on("-p", "--api api", "api needed for conversion") do |api|    
+  opts.on("-p", "--api api", "api needed for conversion") do |api|
     @options.api = api
   end
-  
+
   opts.on("-s", "--settings file", "Includes all of your settings ... locations, categories, etc") do |v|
     puts "checking settings file " if @options.debug
     @options.config = checkFile(v || @options.debug)
   end
-  
 end.parse!
 
 gracefulExit("missing api") if @options.api.nil?
@@ -57,8 +56,8 @@ puts "rate found: #{rate}"
 checkFile(@options.config)
 # Going to check all of the file prerequesites
 rio(@options.config).chomp.lines(/^expense_file/) {|f|
-  @inputFile = f.split("=>")[1].strip.to_s
-  checkFile @inputFile
+  @expense_file = f.split("=>")[1].strip.to_s
+  checkFile @expense_file
 }
 rio(@options.config).chomp.lines(/^archive_file/) {|f|
   @archive_file = f.split("=>")[1].strip.to_s
@@ -71,10 +70,10 @@ rio(@options.config).chomp.lines(/^categories_file/) {|f|
 rio(@options.config).chomp.lines(/^reports_folder/) {|f|
   @reports_folder = f.split("=>")[1].strip.to_s
   checkDir @reports_folder
-}  
+}
 rio(@options.config).chomp.lines(/^date_format/) {|f|
   @date_format = f.split("=>")[1].strip.to_s
-}  
+}
 
 # Ready to parse all categories
 #TODO: actually parse this
@@ -82,13 +81,23 @@ rio(@categories_file).chomp.lines {|l|
   c = l.split("=>")[1].strip.to_s
   @categories.add(c)
 }
+# Populate the initial values at the beginning of the year
 @categories.each {|c|
-  if rio(@archive_file).chomp.lines[/Initial #{c}/].length != 12 then 
-    @transactions << "0,Initial #{c},#{c},#{ DateTime.now.strftime(@date_format)}"
-    
+  if rio(@archive_file).chomp.lines[/Initial #{c}/].length != 12 then
+    for i in 1..12 do
+      @transactions << "0.0,Initial #{c},#{c},#{ Date.new(Date.today.year,i,1).strftime(@date_format)}"
+    end
+
   end
   }
-p @transactions
-  
+
+# Write all transactions to the archive file
+@transactions.each { |t|
+  rio(@archive_file).noautoclose << "#{t}\n"
+}
+
+# Reset the expense log
+#rio(@expense_file) < ""
 puts '05 finance done'
+
 exit 0
