@@ -1,10 +1,10 @@
 begin
   require 'optparse'
+  require 'rubygems'
   require 'json'
   require 'ostruct'
   require 'fileutils'
   require 'rio'
-  require 'rinruby'
   require 'net/http'
   require 'set'
   require 'date'
@@ -87,7 +87,7 @@ rio(@categories_file).chomp.lines {|l|
 @categories_uniq.each {|c|
   if rio(@archive_file).chomp.lines[/Initial #{c}/].length != 12 then
     for i in 1..12 do
-      @transactions << "0.0,Initial #{c},#{c},#{ Date.new(Date.today.year,i,1).strftime(@date_format)}"
+      @transactions << "0.0,Initial #{c},#{ Date.new(Date.today.year,i,1).strftime(@date_format)},#{c}"
     end
 
   end
@@ -98,13 +98,45 @@ resp = JSON.parse(Net::HTTP.get(uri))
 if resp.has_key? 'Error'
   raise "web service error"
 end
-rate = resp['rate'].to_f.round(2)
-puts "rate found: #{rate}"
+@rate = resp['rate'].to_f.round(2)
+puts "rate found: #{@rate}"
 
 # --- Main parsing of the file is here
 #
 @tryDate  = false
 @currDate = false
+
+# Nice formatting for the transaction
+def processExpenseItem(_line)
+a,not_needed,d = /(\d+)(\s*)(.*)/.match(_line).captures
+not_needed = nil
+item = Hash.new
+item[:description] = d.strip
+
+# -- assign category --
+
+@categories.each do |kv|
+  if (d.strip.to_s.downcase.include? kv[0].to_s.downcase) then
+    item[:category] = kv[1]
+    break
+  else
+    item[:category] = 'Unknowns'
+  end
+end
+
+# -- get exchange rate
+if item[:description].include? "USD" then
+  item[:amount] = (a.to_f).round(2)
+else
+  item[:amount] = (a.to_f / @rate).round(2)
+end
+
+# -- formate the date
+item[:date] = @currDate.strftime(@date_format)
+
+return "#{item[:amount]},#{item[:description]},#{item[:date]},#{item[:category]}"
+
+end
 
 # Quick Helper to remember the currently processing date
 #
@@ -112,25 +144,10 @@ puts "rate found: #{rate}"
 def checkFound
   if @tryDate then
     @currDate = @tryDate
-    @tryDate = false
+    @tryDate  = false
     return true
   end
-  return false
-end
-
-# Nice formatting for the transaction
-def processExpenseItem(_line)
-item = Hash.new
-  @categories.each do |kv|
-    if (_line.include? kv[0])
-      item[:category] = kv[1]
-    else
-      item[:category] = 'Unknown'
-    end
-  end
-
-return "#{item[:amount]},#{item[:description]},#{item[:date]},#{item[:category]}"
-
+    return false
 end
 
 rio(@expense_file).lines { |line|
@@ -138,9 +155,8 @@ rio(@expense_file).lines { |line|
   next if checkFound
   #throw "Unable to find and / or parse date" if !@currDate
 
-  #@transactions << processExpenseItem(line)
+  @transactions << processExpenseItem(line)
 }
-
 # Write all transactions to the archive file
 @transactions.each { |t|
   rio(@archive_file).noautoclose << "#{t}\n"
