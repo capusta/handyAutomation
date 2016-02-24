@@ -1,5 +1,5 @@
 expense_file => c:\finances\myexpenses.txt
 archive_file => c:\finance\myYear.csv
-categories_file => ./_05finance/categories.conf
+categories_file => _05finance/categories.conf
 reports_folder => c:\finance\myreports
-date_format => YYYY-mm-dd-hh-mm
+date_format => %Y-%m-%d-%H-%M
