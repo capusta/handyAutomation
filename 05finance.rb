@@ -15,6 +15,8 @@ end
 
 #File checking library cuz it looks like we use it a lot
 require_relative '__lib/common.rb'
+require_relative '_05finance/r_stats.rb'
+
 
 @options = OpenStruct.new
 @options.debug    = false
@@ -94,7 +96,12 @@ rio(@categories_file).chomp.lines {|l|
   }
 
 uri = URI.parse("http://currency-api.appspot.com/api/USD/#{@options.currency}.json?key=#{@options.api}")
-resp = JSON.parse(Net::HTTP.get(uri))
+begin
+  resp = JSON.parse(`wget -qO- #{uri}`)
+rescue
+ resp = JSON.parse(Net::HTTP.get(uri))
+end
+
 if resp.has_key? 'Error'
   raise "web service error"
 end
@@ -164,6 +171,22 @@ rio(@expense_file).lines { |line|
 
 # Reset the expense log
 rio(@expense_file) < ""
-puts '05 finance done'
 
+
+# Generate quick statistics
+#
+#
+inc_sum = 0
+exp_sum = 0
+rio(@archive_file).chomp.lines {|line|
+  _sum = line.split(",")[0].to_f
+
+  if (line.downcase.include? "income") then
+      inc_sum += _sum
+  else
+      exp_sum += _sum
+  end
+}
+puts "Total difference: #{(inc_sum-exp_sum).round(2)}"
+Rubystats.new(@archive_file)
 exit 0
