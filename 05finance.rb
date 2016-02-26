@@ -188,5 +188,5 @@ rio(@archive_file).chomp.lines {|line|
   end
 }
 puts "Total difference: #{(inc_sum-exp_sum).round(2)}"
-Rubystats.new(@archive_file)
+Rubystats.new(@archive_file,@reports_folder)
 exit 0
