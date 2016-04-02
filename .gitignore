@@ -6,3 +6,5 @@
 *.ffs_batch
 *.exe
 *.xml
+.runRequested
+.runInProgress

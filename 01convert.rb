@@ -68,7 +68,7 @@ def do_video
   return nil if !@options.movieMode
   if File.exist?('runInProgress') then
     FileUtils.touch('runRequested')
-    return nil
+    exit
   end
   FileUtils.touch('runInProgress')
   
@@ -84,7 +84,7 @@ def do_video
     next if ignore.any? {|g| f.downcase.include? g}
     next if !approve.any? {|g| f.downcase.include? g}
     debug = @options.debug
-    puts 'hashing ...#{f}' if debug
+    puts "hashing ...#{f}" if debug
     myhash = Digest::SHA256.file f
     if seenHash["#{myhash}"] then
       p "Already seen: #{File.basename(f)}"
@@ -100,6 +100,7 @@ def do_video
     mov_yr_mon_day = "" if @options.norename
     outname = mov_yr_mon_day+File.basename(f,".*")+".mp4"
 
+    #quasi sorting of movies - handy for bulk
     nestedDir = @options.outputDir+mov_yr_mon
     if !File.exist? nestedDir then
       Dir.mkdir nestedDir
@@ -128,7 +129,8 @@ def do_video
     seenHash["#{myhash}"] = true
     rio(@options.hashname) << "#{myhash}\n"
     FileUtils.rm("#{myhash}")
-    #FileUtils.mv(File.path(f), "#{@options.inputDir}/completed")
+    FileUtils.rm('runInProgress')
+    
   }
 end
 
@@ -181,7 +183,7 @@ opt_parse.parse!
 test_handbrake
 #semi hacky to only have one instance running
 do_video
-while (File.exist?('runInProgress')) do
+while (File.exist?('runRequested')) do
   do_video  
 end
 
