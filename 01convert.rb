@@ -66,16 +66,16 @@ end
 
 def do_video
   return nil if !@options.movieMode
+  if File.exist?('runInProgress') then
+    FileUtils.touch('runRequested')
+    return nil
+  end
+  FileUtils.touch('runInProgress')
+  
   seenHash = {}
   debug = @options.debug
   p 'starting movie mode','' if @options.debug
-
-  if File.exist?(@options.hashname) then
-    rio(@options.hashname).chomp.lines{ |l|
-      seenHash[l] = true
-    }
-  end
-
+  
   ignore = ["sample"]
   approve = [".avi",".mov",".mp4",".mkv"]
 
@@ -84,17 +84,12 @@ def do_video
     next if ignore.any? {|g| f.downcase.include? g}
     next if !approve.any? {|g| f.downcase.include? g}
     debug = @options.debug
-    puts 'hashing ...' if debug
-    puts "looking at #{f}" if debug
+    puts 'hashing ...#{f}' if debug
     myhash = Digest::SHA256.file f
     if seenHash["#{myhash}"] then
       p "Already seen: #{File.basename(f)}"
       next
     end
-    # there is another instance of this script running somewhere
-    exit if File.exist? "#{myhash}"
-    # create touch file for future scripts
-    FileUtils.touch("#{myhash}")
 
     mov = MiniExiftool.new f
     movDate = mov["MediaCreateDate"] || mov.filecreatedate
@@ -184,6 +179,10 @@ end
 # Program technically starts here
 opt_parse.parse!
 test_handbrake
-#perhaps we ill break this up later
+#semi hacky to only have one instance running
 do_video
+while (File.exist?('runInProgress')) do
+  do_video  
+end
+
 do_pictures
