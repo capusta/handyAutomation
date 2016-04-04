@@ -6,7 +6,7 @@ require 'mini_exiftool'
 require 'fileutils'
 require 'rio'
 
-commonDir = './_01convert'
+commonDir = Dir.pwd+"/_01convert"
 Dir.mkdir commonDir if !File.exist? commonDir
 
 @options = OpenStruct.new
@@ -55,31 +55,32 @@ opt_parse = OptionParser.new do |opts|
   opts.on("--exif tool") do |e|
     if !File.file? @options.exiftool then
       a1 = File.file? e
-      puts "exif tool = e" if @options.debug
+      puts "exif tool = #{e}" if @options.debug
       throw "Exif tool not found" if !a1
       @options.exiftool = e
     end
-
-    MiniExiftool.command = @options.exiftool
   end
 end
 
 def do_video
   return nil if !@options.movieMode
+  debug = @options.debug
   if File.exist?('runInProgress') then
+    p 'run already in progress, exiting' if debug
     FileUtils.touch('runRequested')
     exit
   end
   FileUtils.touch('runInProgress')
   
   seenHash = {}
-  debug = @options.debug
-  p 'starting movie mode','' if @options.debug
+  
+  p 'starting movie mode' if @options.debug
   
   ignore = ["sample"]
   approve = [".avi",".mov",".mp4",".mkv"]
 
   Find.find(@options.inputDir){|f|
+    puts "processing #{f}"
     next if File.directory?(f)
     next if ignore.any? {|g| f.downcase.include? g}
     next if !approve.any? {|g| f.downcase.include? g}
@@ -128,10 +129,8 @@ def do_video
     puts`#{cmd}`
     seenHash["#{myhash}"] = true
     rio(@options.hashname) << "#{myhash}\n"
-    FileUtils.rm("#{myhash}")
-    FileUtils.rm('runInProgress')
-    
   }
+  FileUtils.rm('runInProgress')
 end
 
 def do_pictures
@@ -177,13 +176,15 @@ def test_handbrake
   end
 end
 
-
+MiniExiftool.command = @options.exiftool
+puts "yay"
 # Program technically starts here
 opt_parse.parse!
 test_handbrake
 #semi hacky to only have one instance running
 do_video
 while (File.exist?('runRequested')) do
+  FileUtils.rm('runRequested')
   do_video  
 end
 
