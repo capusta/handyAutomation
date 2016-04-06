@@ -173,7 +173,6 @@ def test_handbrake
 end
 
 MiniExiftool.command = @options.exiftool
-puts "yay"
 # Program technically starts here
 opt_parse.parse!
 test_handbrake
