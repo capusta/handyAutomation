@@ -8,6 +8,7 @@ require 'rio'
 
 commonDir = Dir.pwd+"/_01convert"
 Dir.mkdir commonDir if !File.exist? commonDir
+require_relative '__lib/common.rb'
 
 @options = OpenStruct.new
 @options.hashname = "#{commonDir}/seenhash.xml"
@@ -37,28 +38,17 @@ opt_parse = OptionParser.new do |opts|
   end
 
   opts.on("-i", "--input dir") do |s|
-    ans = File.directory?(s || "")
-      throw "invalid input dir " if !ans
-    s << "/" unless s[s.length-1] == "/"
-    @options.inputDir = s
-    p "checking input dir #{s} ... #{ans}" if @options.debug
+    p "checking input dir #{s}" if @options.debug
+    @options.inputDir = checkDir(s)
   end
 
   opts.on("-o", "--output dir") do |v|
-    ans = File.directory?(v || "")
-    throw "Output dir is not found" if !ans
-    v << "/" unless v[v.length-1] == "/"
-    @options.outputDir = v
-    p "checking input dir #{v} ... #{ans}" if @options.debug
+    p "checking output dir #{v}" if @options.debug
+    @options.outputDir = checkDir(v)
   end
 
   opts.on("--exif tool") do |e|
-    if !File.file? @options.exiftool then
-      a1 = File.file? e
-      puts "exif tool = #{e}" if @options.debug
-      throw "Exif tool not found" if !a1
-      @options.exiftool = e
-    end
+    @options.exiftool = checkFile(e || @options.exiftool)
   end
 end
 
@@ -74,9 +64,15 @@ def do_video
   
   seenHash = {}
   
+  if File.exist?(@options.hashname) then
+    rio(@options.hashname).chomp.lines{ |l|
+      seenHash[l] = true
+    }
+  end
+  p "loaded #{seenHash.length} hashes" if @options.debug
   p 'starting movie mode' if @options.debug
   
-  ignore = ["sample"]
+  ignore = ["sample", "etrg.mp4"]
   approve = [".avi",".mov",".mp4",".mkv"]
 
   Find.find(@options.inputDir){|f|
