@@ -51,7 +51,6 @@ OptionParser.new do |opts|
 end.parse!
 
 gracefulExit("missing api") if @options.api.nil?
-gracefulExit("missing configuration file ") if @options.config.nil?
 
 checkFile(@options.config)
 # Going to check all of the file prerequesites
@@ -69,7 +68,7 @@ rio(@options.config).chomp.lines(/^categories_file/) {|f|
 }
 rio(@options.config).chomp.lines(/^reports_folder/) {|f|
   @reports_folder = f.split("=>")[1].strip.to_s
-  checkDir @reports_folder
+  @reports_folder = checkDir @reports_folder
 }
 rio(@options.config).chomp.lines(/^date_format/) {|f|
   @date_format = f.split("=>")[1].strip.to_s
