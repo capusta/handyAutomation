@@ -41,7 +41,7 @@ OptionParser.new do |opts|
 
   opts.on("-s", "--settings file", "Includes all of your settings ... locations, categories, etc") do |v|
     puts "checking settings file " if @options.debug
-    @options.config = checkFile(v || @options.debug)
+    @options.config = checkFile(v || @options.config)
   end
 
   opts.on("-r", "--currency c", "change to your local currency") do |v|
