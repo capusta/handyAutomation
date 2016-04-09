@@ -73,7 +73,7 @@ def do_video
   p 'starting movie mode' if @options.debug
   
   ignore = ["sample", "etrg.mp4"]
-  approve = [".avi",".mov",".mp4",".mkv"]
+  approve = [".avi",".mov",".mp4",".mkv",".m4v"]
 
   Find.find(@options.inputDir){|f|
     puts "processing #{f}"
@@ -90,15 +90,15 @@ def do_video
 
     mov = MiniExiftool.new f
     movDate = mov["MediaCreateDate"] || mov.filecreatedate
-    mov_yr_mon_day = movDate.strftime("%Y.%m.%d") + " - "
+    mov_yr_mon_day = movDate.strftime("%Y.%m.%d")
     mov_yr_mon = movDate.strftime("%Y.%m")
     p "Exif Creation: #{mov_yr_mon_day}" if debug
     p "#{File.basename(f,".*")}", "#{myhash}" if debug
     mov_yr_mon_day = "" if @options.norename
-    outname = mov_yr_mon_day+File.basename(f,".*")+".mp4"
+    outname = mov_yr_mon_day+" - "+File.basename(f,".*")+".mp4"
 
     #quasi sorting of movies - handy for bulk
-    nestedDir = @options.outputDir+mov_yr_mon
+    nestedDir = @options.outputDir+mov_yr_mon_day
     if !File.exist? nestedDir then
       Dir.mkdir nestedDir
     end
@@ -134,7 +134,7 @@ def do_pictures
   #no need to keep track of what we seen
   p 'starting photo mode' if @options.debug
 
-  approve = ["jpeg", ".jpg", "JPG"]
+  approve = ["jpeg", ".jpg", "JPG","GIF","gif"]
 
   Find.find(@options.inputDir){|f|
     debug = @options.debug
