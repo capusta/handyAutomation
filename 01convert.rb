@@ -76,7 +76,6 @@ def do_video
   approve = [".avi",".mov",".mp4",".mkv",".m4v"]
 
   Find.find(@options.inputDir){|f|
-    puts "processing #{f}"
     next if File.directory?(f)
     next if ignore.any? {|g| f.downcase.include? g}
     next if !approve.any? {|g| f.downcase.include? g}
@@ -90,12 +89,12 @@ def do_video
 
     mov = MiniExiftool.new f
     movDate = mov["MediaCreateDate"] || mov.filecreatedate
-    mov_yr_mon_day = movDate.strftime("%Y.%m.%d")
+    mov_yr_mon_day = movDate.strftime("%Y.%m.%d") + " - "
     mov_yr_mon = movDate.strftime("%Y.%m")
     p "Exif Creation: #{mov_yr_mon_day}" if debug
     p "#{File.basename(f,".*")}", "#{myhash}" if debug
     mov_yr_mon_day = "" if @options.norename
-    outname = mov_yr_mon_day+" - "+File.basename(f,".*")+".mp4"
+    outname = mov_yr_mon_day+File.basename(f,".*")+".mp4"
 
     #quasi sorting of movies - handy for bulk
     nestedDir = @options.outputDir+mov_yr_mon_day
