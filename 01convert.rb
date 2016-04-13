@@ -163,13 +163,13 @@ def do_pictures
 end
 
 def test_handbrake
-  @options.handbrake = "c:\\Program Files (x86)\\Handbrake\\HandBrakeCLI.exe"
+  return nil if File.exist?(@options.handbrake || 'null')
+  @options.handbrake = "c:/Program Files (x86)/Handbrake/HandBrakeCLI.exe"
   return nil if File.exist?(@options.handbrake)
-  @options.handbrake = "c:\\Program Files\\Handbrake\\HandBrakeCLI.exe"
-  if !File.exist?(@options.handbrake) then
-    p "Handbrake CLI not found "
-    exit
-  end
+  @options.handbrake = 'c:/Program Files/Handbrake/HandBrakeCLI.exe'
+  return nil if File.exist?(@options.handbrake)
+  p "Unable to find handbrake, is installed?"
+  exit 1
 end
 
 MiniExiftool.command = @options.exiftool
