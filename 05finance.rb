@@ -140,7 +140,7 @@ end
 # -- formate the date
 item[:date] = @currDate.strftime(@date_format)
 
-return "#{item[:date]},#{item[:description]},item[:amount]},#{item[:category]}"
+return "#{item[:date]},#{item[:description]},#{item[:amount]},#{item[:category]}"
 
 end
 
@@ -178,7 +178,7 @@ rio(@expense_file) < ""
 inc_sum = 0
 exp_sum = 0
 rio(@archive_file).chomp.lines {|line|
-  _sum = line.split(",")[0].to_f
+  _sum = line.split(",")[2].to_f
 
   if (line.downcase.include? "income") then
       inc_sum += _sum

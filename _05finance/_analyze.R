@@ -4,7 +4,7 @@
 library(ggplot2)
 library(gridExtra)
 
-mydata <- read.csv(fileName, header=FALSE, col.names=c("Amount","Description","Date","Category"))
+mydata <- read.csv(fileName, header=FALSE, col.names=c("Date","Description","Amount","Category"))
 mydata$Date <- as.Date(mydata$Date)
 mydata$Month.Name <- format(mydata$Date, format="%b")
 mydata$Month.Number <- format(mydata$Date, format="%m")
