@@ -140,7 +140,7 @@ end
 # -- formate the date
 item[:date] = @currDate.strftime(@date_format)
 
-return "#{item[:amount]},#{item[:description]},#{item[:date]},#{item[:category]}"
+return "#{item[:date]},#{item[:description]},item[:amount]},#{item[:category]}"
 
 end
 
