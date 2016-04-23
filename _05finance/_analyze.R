@@ -4,6 +4,10 @@
 library(ggplot2)
 library(gridExtra)
 
+
+#fileName <- "troubleshooting"
+#reportsFolder <- "troubleshooting"
+
 mydata <- read.csv(fileName, header=FALSE, col.names=c("Date","Description","Amount","Category"))
 mydata$Date <- as.Date(mydata$Date)
 mydata$Month.Name <- format(mydata$Date, format="%b")
