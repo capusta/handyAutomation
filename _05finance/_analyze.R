@@ -22,7 +22,8 @@ for (cat in levels(mydata$Category)){
   total_sum = ggplot(mydata[mydata$Category == cat,], aes(Month.Number, Amount, fill=Month.Number)) +
     stat_summary(fun.y = sum, geom = "bar") + scale_fill_manual(values=topo.colors(12, alpha=.7)) +
     scale_x_discrete(name="Month", breaks = mydata$Month.Number, labels = mydata$Month.Name) +
-    theme(legend.position='none')
+    theme(legend.position='none', axis.text.x = element_text(angle=45))
+  # + theme_bw() <-- yea, i like that
 
   max_min = ggplot(mydata[mydata$Category == cat,], aes(Month.Number, Amount, fill=Month.Number)) +
     geom_boxplot() + theme(legend.position='none') +
