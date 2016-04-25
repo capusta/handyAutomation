@@ -18,7 +18,7 @@ mydata$Month.Number <- format(mydata$Date, format="%m")
 
 for (cat in levels(mydata$Category)){
   jpeg(paste0(reportsFolder,cat,".jpg"))
-  
+  #todo: possibly expand the x axis here....
   total_sum = ggplot(mydata[mydata$Category == cat,], aes(Month.Number, Amount, fill=Month.Number)) +
     stat_summary(fun.y = sum, geom = "bar") + scale_fill_manual(values=topo.colors(12, alpha=.7)) +
     scale_x_discrete(name="Month", breaks = mydata$Month.Number, labels = mydata$Month.Name) +
