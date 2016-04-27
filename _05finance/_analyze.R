@@ -8,9 +8,10 @@ library(gridExtra)
 #reportsFolder <- "troubleshooting"
 
 
-
+# TODO: pass this variable from the script
+dateFormat <- "%Y-%m-%d-%H-%M"
 mydata <- read.csv(fileName, header=FALSE, col.names=c("Date","Description","Amount","Category"))
-mydata$Date <- as.Date(mydata$Date)
+mydata$Date <- format(mydata$Date, format=dateFormat)
 mydata$Month.Name <- format(mydata$Date, format="%b")
 mydata$Month.Number <- format(mydata$Date, format="%m")
 
