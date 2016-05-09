@@ -45,8 +45,8 @@ for (cat in levels(mydata$Category)){
   
   counts = ggplot(mydata[mydata$Category == cat, ], aes(hour), xlim=c(1,20)) + 
     facet_wrap(~Category) +
-    geom_histogram(binwidth = 0.5, aes(y = ..density..)) +
-    stat_function(fun = dnorm, color = 'red')
+    geom_histogram(binwidth = 0.5, aes(y = ..density..)) + geom_density(color = 'red')
+    #stat_function(fun = dnorm, color = 'red')
   
 # g <- arrangeGrob(box, bar, ncol=1, nrow=2)
   grid.arrange(total_sum, max_min, counts, ncol=2, nrow=2)
