@@ -31,7 +31,8 @@ for (cat in levels(mydata$Category)){
   
   total_sum = ggplot(mydata[mydata$Category == cat,], aes(Month.Number, Amount, fill=Month.Number)) +
     theme_bw() +
-    stat_summary(fun.y = sum, geom = "bar") + 
+    geom_bar(aes(x=Month.Number, y=Amount), color="white", position="stack", stat="identity") +
+    #stat_summary(fun.y = sum, geom = "bar") + 
     scale_fill_manual(values=topo.colors(12, alpha=.7)) +
     scale_x_discrete(breaks = mydata$Month.Number, labels = mydata$Month.Name) +
     theme(legend.position="none", axis.text.x = element_text(angle=45), axis.title.x=element_blank())
