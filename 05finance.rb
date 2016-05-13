@@ -89,7 +89,7 @@ rio(@categories_file).chomp.lines {|l|
   if rio(@archive_file).chomp.lines[/Initial #{c}/].length != 12 then
     for i in 1..12 do
         h=rand(0..23)
-        @transactions << "#{ DateTime.new(Date.today.year,i,1,h,0).strftime(@date_format)},Initial #{c},0.0,#{c}"
+        @transactions << "#{DateTime.new(Date.today.year,i,1,h,0).strftime(@date_format)},Initial #{c},0.0,#{c}"
     end
 
   end

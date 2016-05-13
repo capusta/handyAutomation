@@ -24,7 +24,7 @@ mydata$hour <- as.numeric(format(mydata$Date, format="%H"))
 mydata$min <- format(mydata$Date, format="%M")
 
 # Cleanup of unnecessary field ... but maybe we can revert this if there is a need
-mydata <- mydata[, !(names(mydata) %in% c("Date"))]
+#mydata <- mydata[, !(names(mydata) %in% c("Date"))]
 
 # Some basic plotting
 for (cat in levels(mydata$Category)){ 
