@@ -88,7 +88,8 @@ rio(@categories_file).chomp.lines {|l|
 @categories_uniq.each {|c|
   if rio(@archive_file).chomp.lines[/Initial #{c}/].length != 12 then
     for i in 1..12 do
-      @transactions << "0.0,Initial #{c},#{ Date.new(Date.today.year,i,1).strftime(@date_format)},#{c}"
+        h=rand(0..23)
+        @transactions << "#{ DateTime.new(Date.today.year,i,1,h,0).strftime(@date_format)},Initial #{c},0.0,#{c}"
     end
 
   end

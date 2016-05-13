@@ -3,6 +3,7 @@
 #install.packages('gridExtra')
 library(ggplot2)
 library(gridExtra)
+library(scales)
 
 #fileName <- "troubleshooting"
 #reportsFolder <- "troubleshooting"
@@ -27,12 +28,13 @@ mydata <- mydata[, !(names(mydata) %in% c("Date"))]
 
 # Some basic plotting
 for (cat in levels(mydata$Category)){ 
-  jpeg(paste0(reportsFolder,cat,".jpg"), width=600)
+  png(paste0(reportsFolder,cat,".png"), width=900, height=800, res = 100)
   
   total_sum = ggplot(mydata[mydata$Category == cat,], aes(Month.Number, Amount, fill=Month.Number)) +
     theme_bw() +
-    stat_summary(fun.y = sum, geom = "bar") + 
-    scale_fill_manual(values=topo.colors(12, alpha=.7)) +
+    geom_bar(aes(x=Month.Number, y=Amount), color="white", position="stack", stat="identity") +
+    #stat_summary(fun.y = sum, geom = "bar") + 
+    scale_fill_manual(values=topo.colors(12, alpha=.8)) +
     scale_x_discrete(breaks = mydata$Month.Number, labels = mydata$Month.Name) +
     theme(legend.position="none", axis.text.x = element_text(angle=45), axis.title.x=element_blank())
     
@@ -43,11 +45,14 @@ for (cat in levels(mydata$Category)){
     scale_fill_manual(values=topo.colors(12, alpha=.7)) +
     theme(legend.position='none', axis.text.x = element_text(angle=45), axis.title.x=element_blank())
   
-  counts = ggplot(mydata[mydata$Category == cat, ], aes(hour), xlim=c(1,20)) + 
+  counts = ggplot(mydata[mydata$Category == cat, ], aes(hour)) + 
     facet_wrap(~Category) +
-    geom_histogram(binwidth = 0.5, aes(y = ..density..)) + geom_density(color = 'red')
-    #stat_function(fun = dnorm, color = 'red')
-  
+    geom_bar(aes(x=hour, y=Amount), color="gray", position="stack", stat="identity") +
+    theme(axis.text.x=element_text(angle=45, vjust=.5, hjust=1), legend.position='none')
+    #scale_x_datetime(labels = date_format(dateFormat))
+    #scale_x_discrete(labels=seq(0,24))
+    #geom_histogram(binwidth = 1, aes(x=hour, weight=Amount)) + 
+    
 # g <- arrangeGrob(box, bar, ncol=1, nrow=2)
   grid.arrange(total_sum, max_min, counts, ncol=2, nrow=2)
   
