@@ -45,10 +45,11 @@ for (cat in levels(mydata$Category)){
     scale_fill_manual(values=topo.colors(12, alpha=.7)) +
     theme(legend.position='none', axis.text.x = element_text(angle=45), axis.title.x=element_blank())
   
-  counts = ggplot(mydata[mydata$Category == cat, ], aes(hour)) + 
-    facet_wrap(~Category) +
-    geom_bar(aes(x=hour, y=Amount), color="gray", position="stack", stat="identity") +
-    theme(axis.text.x=element_text(angle=45, vjust=.5, hjust=1), legend.position='none')
+  counts = ggplot(mydata[mydata$Category == cat, ], aes(hour, fill=hour)) + 
+    theme_bw() +
+    geom_bar(aes(x=hour, y=Amount), position='dodge', stat="identity") +
+    coord_polar() + scale_x_discrete(drop=FALSE) +
+    theme(axis.text.x=element_text(vjust=.5, hjust=1), legend.position='none')
     #scale_x_datetime(labels = date_format(dateFormat))
     #scale_x_discrete(labels=seq(0,24))
     #geom_histogram(binwidth = 1, aes(x=hour, weight=Amount)) + 
