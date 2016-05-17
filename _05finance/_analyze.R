@@ -45,7 +45,7 @@ for (cat in levels(mydata$Category)){
     scale_fill_manual(values=topo.colors(12, alpha=.7)) +
     theme(legend.position='none', axis.text.x = element_text(angle=45), axis.title.x=element_blank())
   
-  counts = ggplot(mydata[mydata$Category == cat, ], aes(hour, fill=hour)) + 
+  counts = ggplot(mydata[mydata$Category == cat, ], aes(factor(hour), fill=factor(hour))) + 
     theme_bw() +
     geom_bar(aes(x=hour, y=Amount), position='dodge', stat="identity") +
     coord_polar() + scale_x_discrete(drop=FALSE) +
@@ -55,7 +55,8 @@ for (cat in levels(mydata$Category)){
     #geom_histogram(binwidth = 1, aes(x=hour, weight=Amount)) + 
     
 # g <- arrangeGrob(box, bar, ncol=1, nrow=2)
-  grid.arrange(total_sum, max_min, counts, ncol=2, nrow=2)
+  grid.arrange(total_sum, max_min, counts, ncol=2, nrow=2,
+               top=textGrob(cat,gp=gpar(fontsize=12,font=3)))
   
   #ggsave(paste0(cat,".jpg"), width = 4, height = 2, scale = 3.6)
   dev.off()
