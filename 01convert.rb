@@ -72,7 +72,7 @@ def do_video
   p "loaded #{seenHash.length} hashes" if @options.debug
   p 'starting movie mode' if @options.debug
   
-  ignore = ["sample", "etrg.mp4"]
+  ignore = ["sample", "etrg.mp4", "rarbg.com"]
   approve = [".avi",".mov",".mp4",".mkv",".m4v"]
 
   Find.find(@options.inputDir){|f|
