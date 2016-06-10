@@ -123,7 +123,7 @@ def do_video
     puts cmd if debug
     puts`#{cmd}`
     seenHash["#{myhash}"] = true
-    rio(@options.hashname) << "#{myhash}\n"
+    rio(@options.hashname) << "#{myhash} || #{f}\n"
   }
   FileUtils.rm('runInProgress')
 end
