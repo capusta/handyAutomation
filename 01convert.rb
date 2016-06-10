@@ -66,7 +66,7 @@ def do_video
   
   if File.exist?(@options.hashname) then
     rio(@options.hashname).chomp.lines{ |l|
-      seenHash[l] = true
+      seenHash[l.split("||")[0].chomp.strip] = true
     }
   end
   p "loaded #{seenHash.length} hashes" if @options.debug
@@ -81,7 +81,7 @@ def do_video
     next if !approve.any? {|g| f.downcase.include? g}
     debug = @options.debug
     puts "hashing ...#{f}" if debug
-    myhash = Digest::SHA256.file f
+    myhash = Digest::MD5.file f
     if seenHash["#{myhash}"] then
       p "Already seen: #{File.basename(f)}"
       next
