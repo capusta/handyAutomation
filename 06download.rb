@@ -17,3 +17,6 @@ tools.each { |name, weblocation|
 	}
 }
 
+`gem install mini_magick`
+`gem install rio`
+`gem install rinruby`

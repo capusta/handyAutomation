@@ -93,8 +93,8 @@ def do_video
     mov_yr_mon = movDate.strftime("%Y.%m")
     p "Exif Creation: #{mov_yr_mon_day}" if debug
     p "#{File.basename(f,".*")}", "#{myhash}" if debug
-    mov_yr_mon_day = "" if @options.norename
-    outname = mov_yr_mon_day+"-"+File.basename(f,".*")+".mp4"
+	@options.norename ? (mov_yr_mon_day = ""; delemeter = "") : (delemeter = "-")
+    outname = mov_yr_mon_day+delemeter+File.basename(f,".*")+".mp4"
 
     #quasi sorting of movies - handy for bulk
     nestedDir = @options.outputDir+mov_yr_mon_day
