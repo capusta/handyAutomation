@@ -164,6 +164,9 @@ rio(@expense_file).lines { |line|
 
   @transactions << processExpenseItem(line)
 }
+
+# Take a backup of the file first
+FileUtils.cp(@archive_file, "#{@archive_file}.bak")
 # Write all transactions to the archive file
 @transactions.each { |t|
   rio(@archive_file).noautoclose << "#{t}\n"
