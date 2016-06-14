@@ -115,34 +115,34 @@ puts "rate found: #{@rate}"
 
 # Nice formatting for the transaction
 def processExpenseItem(_line)
-a,not_needed,d = /(\d+)(\s*)(.*)/.match(_line).captures
-not_needed = nil
-item = Hash.new
-item[:description] = d.strip
+  return nil if _line.chomp.strip.empty?
+  puts "processing item '#{_line}'" if @options.debug
+  a,not_needed,d = /(\d+)(\s*)(.*)/.match(_line).captures
+  not_needed=nil #ruby lint complains if you dont use the variable
+  item = Hash.new
+  item[:description] = d.chomp.strip
 
-# -- assign category --
-
-@categories.each do |kv|
+  # ----- assign category -----
+  @categories.each do |kv|
   if (d.strip.to_s.downcase.include? kv[0].to_s.downcase) then
     item[:category] = kv[1]
     break
-  else
-    item[:category] = 'Unknowns'
+    else
+      item[:category] = 'Unknown'
+    end
   end
-end
 
-# -- get exchange rate
-if item[:description].include? "USD" then
-  item[:amount] = (a.to_f).round(2)
-else
-  item[:amount] = (a.to_f / @rate).round(2)
-end
+  # -- get exchange rate
+  if item[:description].include? "USD" then
+      item[:amount] = (a.to_f).round(2)
+  else
+      item[:amount] = (a.to_f / @rate).round(2)
+  end
 
-# -- formate the date
-item[:date] = @currDate.strftime(@date_format)
+  # -- formate the date
+  item[:date] = @currDate.strftime(@date_format)
 
-return "#{item[:date]},#{item[:description]},#{item[:amount]},#{item[:category]}"
-
+  return "#{item[:date]},#{item[:description]},#{item[:amount]},#{item[:category]}"
 end
 
 # Quick Helper to remember the currently processing date
@@ -166,7 +166,7 @@ rio(@expense_file).lines { |line|
 }
 
 # Take a backup of the file first
-FileUtils.cp(@archive_file, "#{@archive_file}.#{Date.today.strftime}.bak")
+FileUtils.cp(@archive_file, "#{@archive_file}.#{Date.today.strftime}.csv")
 # Write all transactions to the archive file
 @transactions.each { |t|
   rio(@archive_file).noautoclose << "#{t}\n"
