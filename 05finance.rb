@@ -169,6 +169,7 @@ rio(@expense_file).lines { |line|
 FileUtils.cp(@archive_file, "#{@archive_file}.#{Date.today.strftime}.csv")
 # Write all transactions to the archive file
 @transactions.each { |t|
+  next if t.nil? || t.empty?
   rio(@archive_file).noautoclose << "#{t}\n"
 }
 
