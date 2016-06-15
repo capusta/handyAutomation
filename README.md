@@ -1,5 +1,7 @@
+###  Hello from Vitaliy!
 ###  quick home automation
 ###### for the little things in everyday life
+
 
 Typically there are a lot of things that are needed to be done but I just done have the time to do it.  Backups, conversion, archive ...etc.  Sure it can be done with a cron job, but then with a few modification - these scritps can be ported.  Mostly written in Ruby :)
 
