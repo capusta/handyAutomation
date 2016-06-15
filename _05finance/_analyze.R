@@ -14,7 +14,7 @@ dateFormat <- "%Y-%m-%d-%H-%M"
 
 # The basic dataset
 mydata <- read.csv(fileName, header=FALSE, col.names=c("Date","Description","Amount","Category"))
-mydata <- mydata[mydata$Amount > 0.0, ]
+#mydata <- mydata[mydata$Amount > 0.0, ]
 mydata$Date <- as.POSIXct(mydata$Date, format=dateFormat)
 
 # Let's break it up into various parts for parsing
@@ -40,7 +40,7 @@ for (cat in levels(mydata$Category)){
     
 
   max_min = ggplot(mydata[mydata$Category == cat,], aes(Month.Number, Amount, fill=Month.Number)) +
-    theme_bw() + geom_boxplot() + 
+    geom_boxplot() + 
     scale_x_discrete(breaks = mydata$Month.Number, labels = mydata$Month.Name) +
     scale_fill_manual(values=topo.colors(12, alpha=.7)) +
     theme(legend.position='none', axis.text.x = element_text(angle=45), axis.title.x=element_blank())
@@ -48,7 +48,7 @@ for (cat in levels(mydata$Category)){
   counts = ggplot(mydata[mydata$Category == cat, ], aes(factor(hour), fill=factor(hour))) + 
     theme_bw() +
     geom_bar(aes(x=hour, y=Amount), position='dodge', stat="identity") +
-    coord_polar() + scale_x_discrete(drop=FALSE) +
+    coord_polar() + scale_x_discrete(drop=FALSE, limits=sprintf("%02d",seq(1,24))) +
     theme(axis.text.x=element_text(vjust=.5, hjust=1), legend.position='none')
     #scale_x_datetime(labels = date_format(dateFormat))
     #scale_x_discrete(labels=seq(0,24))
