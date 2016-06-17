@@ -107,7 +107,7 @@ def do_video
     outname = nestedDir+"/"+outname
     p "saving to #{outname}" if debug
 
-   ### Rotationgs - --roate <mode> 1. Vertical flip 2. horizontal flip 4. clockwise
+   ### Rotationgs - --rotate <mode> 1. Vertical flip 2. horizontal flip 4. clockwise
     rotation_option = case mov['Rotation']
       when 90 then '--rotate=4'
       when 180 then '--rotate=3'
@@ -132,7 +132,10 @@ def do_pictures
   return nil if !@options.photoMode
   #no need to keep track of what we seen
   p 'starting photo mode' if @options.debug
-
+  if `convert -version`.length > 350 then
+	@options.imagemagic = true
+	require 'mini_magick'
+  end
   approve = [".jpeg", ".jpg","gif"]
 
   Find.find(@options.inputDir){|f|
@@ -146,7 +149,8 @@ def do_pictures
       puts "unable to get exif data for photo"
       next
     end
-    p pic['orientation'] if debug
+    p pic['Rotation'] if debug
+	# TODO: Flip some images randomly
     p pic['DateTimeOriginal'] if debug
     pic_yr_mon_day = picDate.strftime("%Y.%m.%d")
     p "Exif Creation: #{pic_yr_mon_day}" if debug
