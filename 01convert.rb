@@ -135,6 +135,7 @@ def do_pictures
   if `convert -version`.length > 350 then
 	@options.imagemagic = true
 	require 'mini_magick'
+	p 'mini_magic gem loaded' if @options.debug
   end
   approve = [".jpeg", ".jpg","gif"]
 
@@ -150,7 +151,15 @@ def do_pictures
       next
     end
     p pic['Rotation'] if debug
-	# TODO: Flip some images randomly
+	p pic['exifimageheight'] if debug
+	
+	if (pic['Rotation'] == 'Horizontal' && 
+	   (pic['exifimageheight'].to_i > pic['exifimagewidth'].to_i)) then
+		img = MiniMagick.new(f)
+		img.rotate "-90"
+		img.save
+	  
+	end
     p pic['DateTimeOriginal'] if debug
     pic_yr_mon_day = picDate.strftime("%Y.%m.%d")
     p "Exif Creation: #{pic_yr_mon_day}" if debug
