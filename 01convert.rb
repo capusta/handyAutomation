@@ -155,10 +155,8 @@ def do_pictures
 	
 	if (pic['Rotation'] == 'Horizontal' && 
 	   (pic['exifimageheight'].to_i > pic['exifimagewidth'].to_i)) then
-		img = MiniMagick.new(f)
+		img = MiniMagick::Image.new(f)
 		img.rotate "-90"
-		img.save
-	  
 	end
     p pic['DateTimeOriginal'] if debug
     pic_yr_mon_day = picDate.strftime("%Y.%m.%d")
