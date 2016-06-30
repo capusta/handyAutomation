@@ -144,7 +144,12 @@ def do_pictures
     puts "checking #{f}" if debug
     next if File.directory?(f)
     next if !approve.any? {|g| f.downcase.include? g}
-    pic = MiniExiftool.new f
+	begin
+		pic = MiniExiftool.new f
+	rescue
+		puts "Unable to run Exiftool on #{f}"
+		next
+	end
     picDate = pic['DateTimeOriginal']
     if picDate == nil then
       puts "unable to get exif data for photo"
