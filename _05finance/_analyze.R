@@ -4,6 +4,7 @@
 library(ggplot2)
 library(gridExtra)
 library(scales)
+library(grid)
 
 #fileName <- "troubleshooting"
 #reportsFolder <- "troubleshooting"
@@ -55,8 +56,9 @@ for (cat in levels(mydata$Category)){
     #geom_histogram(binwidth = 1, aes(x=hour, weight=Amount)) +
 
 # g <- arrangeGrob(box, bar, ncol=1, nrow=2)
+  toptext <- textGrob(cat,gp=gpar(fontsize=12,font=3))
   grid.arrange(total_sum, max_min, counts, ncol=2, nrow=2,
-               top=textGrob(cat,gp=gpar(fontsize=12,font=3)))
+               top=toptext)
 
   #ggsave(paste0(cat,".jpg"), width = 4, height = 2, scale = 3.6)
   dev.off()
