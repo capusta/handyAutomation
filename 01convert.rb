@@ -50,6 +50,10 @@ opt_parse = OptionParser.new do |opts|
   opts.on("--exif tool") do |e|
     @options.exiftool = checkFile(e || @options.exiftool)
   end
+  
+  opts.on("--movecompleted") do |e|
+    @options.movecompleted = true
+  end
 end
 
 def do_video
@@ -93,7 +97,7 @@ def do_video
     mov_yr_mon = movDate.strftime("%Y.%m")
     p "Exif Creation: #{mov_yr_mon_day}" if debug
     p "#{File.basename(f,".*")}", "#{myhash}" if debug
-	@options.norename ? (mov_yr_mon_day = ""; delemeter = "") : (delemeter = "-")
+    @options.norename ? (mov_yr_mon_day = ""; delemeter = "") : (delemeter = "-")
     outname = mov_yr_mon_day+delemeter+File.basename(f,".*")+".mp4"
 
     #quasi sorting of movies - handy for bulk
@@ -101,7 +105,7 @@ def do_video
     if !File.exist? nestedDir then
       Dir.mkdir nestedDir
     end
-    if !File.exist? "#{@options.inputDir}/completed" then
+    if (!File.exist?("#{@options.inputDir}/completed") && @options.movecompleted) then
       Dir.mkdir "#{@options.inputDir}/completed"
     end
     outname = nestedDir+"/"+outname
@@ -124,6 +128,9 @@ def do_video
     puts`#{cmd}`
     seenHash["#{myhash}"] = true
     rio(@options.hashname) << "#{myhash} || #{f}\n"
+    if @options.movecompleted then
+      FileUtils.mv(f, "completed/#{f}")
+    end
   }
   FileUtils.rm('runInProgress')
 end
