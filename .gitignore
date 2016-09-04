@@ -3,6 +3,8 @@
 *.JPG
 *.log
 *.swp
+*.RData
+*.RHistory
 *.ffs_batch
 *.exe
 *.xml
