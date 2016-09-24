@@ -129,7 +129,7 @@ def do_video
     seenHash["#{myhash}"] = true
     rio(@options.hashname) << "#{myhash} || #{f}\n"
     if @options.movecompleted then
-      FileUtils.mv(f, "completed/#{f}")
+      FileUtils.mv(f, "#{@options.inputDir}/completed/#{File.basename(f)}")
     end
   }
   FileUtils.rm('runInProgress')
@@ -163,7 +163,7 @@ def do_pictures
       next
     end
     p pic['Rotation'] if debug
-	p pic['exifimageheight'] if debug
+    p pic['exifimageheight'] if debug
 	
 	if (pic['Rotation'] == 'Horizontal' && 
 	   (pic['exifimageheight'].to_i > pic['exifimagewidth'].to_i)) then
