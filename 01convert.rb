@@ -101,7 +101,7 @@ def do_video
     outname = mov_yr_mon_day+delemeter+File.basename(f,".*")+".mp4"
 
     #quasi sorting of movies - handy for bulk
-    nestedDir = @options.outputDir+mov_yr_mon_day
+    nestedDir = @options.outputDir+mov_yr_mon
     if !File.exist? nestedDir then
       Dir.mkdir nestedDir
     end
@@ -188,7 +188,7 @@ def test_handbrake
   return nil if File.exist?(@options.handbrake || 'null')
   @options.handbrake = "c:/Program Files (x86)/Handbrake/HandBrakeCLI.exe"
   return nil if File.exist?(@options.handbrake)
-  @options.handbrake = 'c:/Program Files/Handbrake/HandBrakeCLI.exe'
+  @options.handbrake = 'd:/Program Files/Handbrake/HandBrakeCLI.exe'
   return nil if File.exist?(@options.handbrake)
   p "Unable to find handbrake, is installed?"
   exit 1
