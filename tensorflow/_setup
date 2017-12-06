@@ -1,0 +1,8 @@
+#! /usr/bin/env bash
+if [[ `whoami` == 'root' ]]; then
+  echo "please do not run as root"
+  exit 1
+fi
+
+sudo apt-get install python-pip python-dev python-virtualenv
+virtualenv --system-site-packages .
