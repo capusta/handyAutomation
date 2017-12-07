@@ -5,4 +5,9 @@ if [[ `whoami` == 'root' ]]; then
 fi
 
 sudo apt-get install python-pip python-dev python-virtualenv
-virtualenv --system-site-packages .
+# Oops ... this is not mentioned on the install docks
+# https://www.tensorflow.org/install/install_linux#InstallingVirtualenv
+which virtualenv || sudo easy_install virtualenv
+test -e bin || virtualenv --system-site-packages .
+source bin/activate
+
