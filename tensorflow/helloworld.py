@@ -5,7 +5,7 @@ import tensorflow as tf
 x = np.random.randint(low=1,high=10,size=10)
 y = np.random.randint(low=1,high=10,size=10)
 
-print("Multiply {0} by {1}".format(x,y))
+print("Multiply {0} by {1}".format(x, y))
 
 # Each input is a 1x? array/matrix
 b = tf.placeholder(tf.int8, [None, ], name='inputx1')
