@@ -6,11 +6,6 @@ import sys
 
 learning_rate = 0.5
 epochs = 10
-batch_size = 100
-
-# Random array of 20
-x_raw = np.random.randint(low=1, high=60, size=20)
-y_raw = np.random.randint(low=0, high=2, size=5)
 
 x = tf.placeholder(tf.float32, [None, 20])
 # Classifier with 5-space placeholder
@@ -45,3 +40,9 @@ init_op = tf.global_variables_initializer()
 correct_prediction = tf.equal(tf.argmax(y,1), tf.argmax(y_,1))
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
+with tf.Session() as sess:
+  sess.run(init_op)
+  for epoch in range(epochs):
+    avg_cost = 0
+    x_raw = np.random.randint(low=1, high=60, size=20)
+    y_raw = np.random.randint(low=0, high=2, size=5)

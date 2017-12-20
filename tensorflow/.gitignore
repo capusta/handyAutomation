@@ -5,3 +5,6 @@ lib/
 local/
 share/
 idea/
+
+*.json
+.Python
