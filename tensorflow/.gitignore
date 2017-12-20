@@ -8,3 +8,4 @@ idea/
 
 *.json
 .Python
+*.gz
