@@ -44,8 +44,8 @@ with tf.Session() as sess:
   sess.run(init_op)
   for epoch in range(epochs):
     avg_cost = 0
-    x_raw = np.random.randint(low=1, high=60, size=20)
-    y_raw = np.random.randint(low=0, high=2, size=5)
+    x_raw = [np.random.randint(low=1, high=60, size=20)]
+    y_raw = [np.random.randint(low=0, high=2, size=5)]
     _, c = sess.run([optimiser, cross_entropy], feed_dict={x: x_raw, y: y_raw})
     # our cost is averaged over 10 epochs 
     avg_cost += c / 10
