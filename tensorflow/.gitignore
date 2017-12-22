@@ -5,7 +5,11 @@ lib/
 local/
 share/
 idea/
+models/
 
 *.json
 .Python
 *.gz
+
+# Models saved in CWD
+checkpoint

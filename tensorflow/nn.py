@@ -40,6 +40,9 @@ init_op = tf.global_variables_initializer()
 correct_prediction = tf.equal(tf.argmax(y,1), tf.argmax(y_,1))
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
+#Save all the variables
+saver = tf.train.Saver()
+
 with tf.Session() as sess:
   sess.run(init_op)
   for epoch in range(epochs):
@@ -50,3 +53,5 @@ with tf.Session() as sess:
     # our cost is averaged over 10 epochs 
     avg_cost += c / 10
     print("Epoch:", (epoch + 1), "cost =", "{:.3f}".format(avg_cost))
+    saver.save(sess, "./models/my_latest_model",global_step=1000)
+
