@@ -13,3 +13,6 @@ models/
 
 # Models saved in CWD
 checkpoint
+
+# Random files
+vocab.csv

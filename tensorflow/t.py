@@ -1,18 +1,30 @@
 #! /usr/bin/env python
 
-import numpy as np
 import tensorflow as tf
+from tensorflow.contrib import lookup
+from tensorflow.python.platform import gfile
 
-# Embedding 10 x 5
-vocabulary_size = 10  # Samples / raw data
-embed_size = 5        # actual unique items in the data set
+MAX_DOC_LENGTH = 5
+PADWORD = 'ZZZ'
 
-init_embeds = tf.random_uniform([vocabulary_size, embed_size], -1.0, 1.0, name='Initial_Embeds')
-embeddings = tf.Variable(init_embeds)
+LINES = ['the quick brown fox',
+         'quick the fox brown',
+         'foo foo bar',
+         'baz']
 
-init = tf.initialize_all_variables()
+
+vocab_processor = tf.contrib.learn.preprocessing.VocabularyProcessor(MAX_DOC_LENGTH)
+vocab_processor.fit_transform(LINES)
+
+init_op = tf.global_variables_initializer()
 
 with tf.Session() as sess:
-    sess.run(init)
-    e = sess.run(embeddings)
-    print(e)
+    sess.run(init_op)
+    sess.run(vocab_processor)
+
+    with gfile.Open('vocab.csv', 'wb') as f:
+        f.write("{}".format(PADWORD))
+        for w, i in vocab_processor.vocabulary_.mapping.iteritems():
+            f.write("{}".format(w))
+    NWORDS = len(vocab_processor.vocabulary_)
+    print (NWORDS)
