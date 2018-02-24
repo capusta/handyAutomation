@@ -1,14 +1,18 @@
 #! /usr/bin/env python
 
 import tensorflow as tf
+import os, sys, argparse
 from tensorflow.contrib import lookup
 from tensorflow.python.platform import gfile
 
-PADWORD = 'ZZZ'
+os.environ['WORKSPACE'] = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+#sys.path[0] = os.environ(['WORKSPACE'])
+
+PADWORD = '###'
 
 LINES = ['the quick brown fox',
-         'quick the fox brown',
          'foo foo bar',
+         'quick the fox brown',
          'baz']
 
 init_op = tf.global_variables_initializer()
@@ -28,13 +32,25 @@ def save_vocab(outfilename):
     print('Vocab length: {}, File: {}'.format(NWORDS, outfilename))
 
 def load_vocab(infilename):
+    v = arguments.pop('vocab', None)
+    if v is None:
+        return
+    print ("Loading Vocabulary {0}".format(v))
     table = lookup.index_table_from_file(
         vocabulary_file=infilename, num_oov_buckets=1, vocab_size=None, default_value=-1)
-    numbers = table.lookup(tf.constant('quick fox'.split()))
+    numbers = table.lookup(tf.constant('quick fox the not blah blah'.split()))
     with tf.Session() as sess:
         tf.tables_initializer().run()
         print "{} --> {}".format(LINES[0], numbers.eval())
 
-
-save_vocab('model.tfmodel')
-load_vocab('model.tfmodel')
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '--vocab',
+        help="Use a specific vocab file",
+        required=False
+    )
+    args = parser.parse_args()
+    arguments = args.__dict__
+    save_vocab('model.tfmodel')
+    load_vocab('model.tfmodel')
