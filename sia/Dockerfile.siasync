@@ -1,0 +1,13 @@
+FROM debian
+
+RUN apt-get update && apt-get install -y wget && \
+  wget https://github.com/tbenz9/siasync/releases/download/1.0.1-beta.1/Siasync-linux-amd64 && \
+  chmod +x /Siasync-linux-amd64
+
+ENTRYPOINT ["/Siasync-linux-amd64"]
+
+ENV API_PASSWORD=
+
+VOLUME /archive
+
+CMD ["-dry-run","-address","10.90.0.0:9980","-password","$API_PASSWORD","-debug","/archive"]
