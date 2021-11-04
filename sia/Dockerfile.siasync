@@ -1,0 +1,11 @@
+FROM debian
+
+RUN apt-get update && apt-get install -y wget && \
+  wget https://github.com/tbenz9/siasync/releases/download/1.0.1-beta.1/Siasync-linux-amd64 && \
+  chmod +x /Siasync-linux-amd64
+
+ENV SUBFOLDER=sia-archive
+
+VOLUME /archive
+
+CMD /Siasync-linux-amd64 -debug -address 172.17.0.1:9980 -include pdf,jpg -subfolder $SUBFOLDER /archive
