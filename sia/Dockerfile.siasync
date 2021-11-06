@@ -8,4 +8,4 @@ ENV SUBFOLDER=sia-archive
 
 VOLUME /archive
 
-CMD /Siasync-linux-amd64 -debug -address 172.17.0.1:9980 -include pdf,jpg -subfolder $SUBFOLDER /archive
+CMD /Siasync-linux-amd64 -debug -address 172.17.0.1:9980 -include pdf,txt,jpg -subfolder $SUBFOLDER /archive
